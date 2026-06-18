@@ -2,7 +2,7 @@ FROM python:3.10-slim
 
 WORKDIR /app
 
-# Installation des dépendances système pour OpenCV et plantages graphiques
+# Installation des dépendances système pour OpenCV
 RUN apt-get update && apt-get install -y \
     libgl1 \
     libglib2.0-0 \
@@ -13,11 +13,13 @@ RUN apt-get update && apt-get install -y \
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copie du reste du code de l'application
+# Copie du reste du code
 COPY . .
 
-# Exposition du port par défaut (indicatif pour Docker)
+# Exposition du port (indicatif)
 EXPOSE 8000
+
 ENV YOLO_CONFIG_DIR=/tmp/Ultralytics
-# Commande de démarrage au format Shell pour injecter dynamiquement le $PORT de Railway
-CMD uvicorn detect_api:app --host 0.0.0.0 --port $PORT
+
+# ✅ Format exec avec sh -c pour que $PORT soit interprété
+CMD ["sh", "-c", "uvicorn detect_api:app --host 0.0.0.0 --port ${PORT:-8000}"]
