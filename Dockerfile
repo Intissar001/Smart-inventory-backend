@@ -18,6 +18,6 @@ COPY . .
 
 # Exposition du port par défaut (indicatif pour Docker)
 EXPOSE 8000
-
+ENV YOLO_CONFIG_DIR=/tmp/Ultralytics
 # Commande de démarrage au format Shell pour injecter dynamiquement le $PORT de Railway
 CMD uvicorn detect_api:app --host 0.0.0.0 --port $PORT
