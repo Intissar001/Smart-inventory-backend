@@ -1,5 +1,5 @@
 [phases.setup]
-nixPkgs = ["python312", "libxcb", "libGL", "glib"]
+nixPkgs = ["python312", "xorg.libxcb", "libGL", "glib"]
 
 [start]
 cmd = "uvicorn detect_api:app --host 0.0.0.0 --port $PORT"
