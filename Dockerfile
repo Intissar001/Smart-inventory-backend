@@ -2,17 +2,22 @@ FROM python:3.10-slim
 
 WORKDIR /app
 
+# Installation des dépendances système pour OpenCV et plantages graphiques
 RUN apt-get update && apt-get install -y \
     libgl1 \
     libglib2.0-0 \
     libxcb1 \
     && rm -rf /var/lib/apt/lists/*
 
+# Copie et installation des dépendances Python
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
+# Copie du reste du code de l'application
 COPY . .
 
+# Exposition du port par défaut (indicatif pour Docker)
 EXPOSE 8000
 
-CMD ["python", "detect_api.py"]
+# Commande de démarrage au format Shell pour injecter dynamiquement le $PORT de Railway
+CMD uvicorn detect_api:app --host 0.0.0.0 --port $PORT
